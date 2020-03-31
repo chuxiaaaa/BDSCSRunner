@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="模块核心">
+      <UniqueIdentifier>{e7d98800-a04f-4483-9b2b-6beda82df92c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="其他文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="符号信息">
+      <UniqueIdentifier>{c76bd642-46f6-42a0-9c4b-bd429337dab9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="json">
+      <UniqueIdentifier>{8b10f710-2aab-4a56-81bf-a50e19697ec8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="预编译头.h">
+      <Filter>其他文件</Filter>
+    </ClInclude>
+    <ClInclude Include="符号定位.hpp">
+      <Filter>符号信息</Filter>
+    </ClInclude>
+    <ClInclude Include="PluginInfo.h" />
+    <ClInclude Include="MCUUID.h" />
+    <ClInclude Include="Actor.h" />
+    <ClInclude Include="Vec3.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="json\json_features.h">
+      <Filter>json</Filter>
+    </ClInclude>
+    <ClInclude Include="json\reader.h">
+      <Filter>json</Filter>
+    </ClInclude>
+    <ClInclude Include="json\value.h">
+      <Filter>json</Filter>
+    </ClInclude>
+    <ClInclude Include="json\version.h">
+      <Filter>json</Filter>
+    </ClInclude>
+    <ClInclude Include="json\writer.h">
+      <Filter>json</Filter>
+    </ClInclude>
+    <ClInclude Include="json\allocator.h">
+      <Filter>json</Filter>
+    </ClInclude>
+    <ClInclude Include="json\assertions.h">
+      <Filter>json</Filter>
+    </ClInclude>
+    <ClInclude Include="json\config.h">
+      <Filter>json</Filter>
+    </ClInclude>
+    <ClInclude Include="json\forwards.h">
+      <Filter>json</Filter>
+    </ClInclude>
+    <ClInclude Include="json\json.h">
+      <Filter>json</Filter>
+    </ClInclude>
+    <ClInclude Include="Block.h" />
+    <ClInclude Include="BlockLegacy.h" />
+    <ClInclude Include="BlockPos.h" />
+    <ClInclude Include="BPos3.h" />
+    <ClInclude Include="插件模块.h" />
+    <ClInclude Include="BlockSource.h" />
+    <ClInclude Include="BlockActor.h" />
+    <ClInclude Include="ItemStack.h" />
+    <ClInclude Include="ContainerItemStack.h" />
+    <ClInclude Include="LevelContainerManagerModel.h" />
+    <ClInclude Include="ContainerManagerModel.h" />
+    <ClInclude Include="Mob.h" />
+    <ClInclude Include="TextPacket.h" />
+    <ClInclude Include="CommandRequestPacket.h" />
+    <ClInclude Include="RBStream.h" />
+    <ClInclude Include="VarInts.h" />
+    <ClInclude Include="MyPkt.h" />
+    <ClInclude Include="ModalFormResponsePacket.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="预编译头.cpp">
+      <Filter>其他文件</Filter>
+    </ClCompile>
+    <ClCompile Include="插件模块.cpp">
+      <Filter>模块核心</Filter>
+    </ClCompile>
+    <ClCompile Include="PluginInfo.cpp">
+      <Filter>其他文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MCUUID.cpp">
+      <Filter>其他文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor.cpp">
+      <Filter>其他文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Vec3.cpp">
+      <Filter>其他文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>其他文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PluginEvent.cpp">
+      <Filter>其他文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Block.cpp">
+      <Filter>其他文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BlockLegacy.cpp">
+      <Filter>其他文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BlockPos.cpp">
+      <Filter>其他文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BPos3.cpp">
+      <Filter>其他文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BlockSource.cpp">
+      <Filter>其他文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BlockActor.cpp">
+      <Filter>其他文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemStack.cpp">
+      <Filter>其他文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ContainerItemStack.cpp">
+      <Filter>其他文件</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelContainerManagerModel.cpp">
+      <Filter>其他文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ContainerManagerModel.cpp">
+      <Filter>其他文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Mob.cpp">
+      <Filter>其他文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TextPacket.cpp">
+      <Filter>其他文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandRequestPacket.cpp">
+      <Filter>其他文件</Filter>
+    </ClCompile>
+    <ClCompile Include="RBStream.cpp">
+      <Filter>其他文件</Filter>
+    </ClCompile>
+    <ClCompile Include="VarInts.cpp">
+      <Filter>其他文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MyPkt.cpp">
+      <Filter>其他文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ModalFormResponsePacket.cpp">
+      <Filter>其他文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="BDSCSRunner.rc" />
+  </ItemGroup>
+</Project>

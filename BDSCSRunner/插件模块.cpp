@@ -233,6 +233,7 @@ static void addPlayerInfo(Json::Value& jv, Player* p) {
 	if (p) {
 		jv["playername"] = p->getNameTag();
 		jv["isstand"] = p->isStand();
+		jv["dimensionId"] = p->getDimensionId();
 		jv["XYZ"] = toJson(p->getPos()->toJsonString());
 	}
 }

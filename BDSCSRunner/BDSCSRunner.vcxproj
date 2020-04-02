@@ -162,6 +162,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
+    <ClInclude Include="ActorDamageSource.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="BlockActor.h" />
     <ClInclude Include="BlockLegacy.h" />
@@ -171,7 +172,9 @@
     <ClInclude Include="CommandRequestPacket.h" />
     <ClInclude Include="ContainerItemStack.h" />
     <ClInclude Include="ContainerManagerModel.h" />
+    <ClInclude Include="ItemActor.h" />
     <ClInclude Include="ItemStack.h" />
+    <ClInclude Include="ItemStackBase.h" />
     <ClInclude Include="json\allocator.h" />
     <ClInclude Include="json\assertions.h" />
     <ClInclude Include="json\config.h" />
@@ -199,6 +202,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="ActorDamageSource.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="BlockActor.cpp" />
     <ClCompile Include="BlockLegacy.cpp" />
@@ -208,7 +212,9 @@
     <ClCompile Include="CommandRequestPacket.cpp" />
     <ClCompile Include="ContainerItemStack.cpp" />
     <ClCompile Include="ContainerManagerModel.cpp" />
+    <ClCompile Include="ItemActor.cpp" />
     <ClCompile Include="ItemStack.cpp" />
+    <ClCompile Include="ItemStackBase.cpp" />
     <ClCompile Include="LevelContainerManagerModel.cpp" />
     <ClCompile Include="MCUUID.cpp" />
     <ClCompile Include="Mob.cpp" />

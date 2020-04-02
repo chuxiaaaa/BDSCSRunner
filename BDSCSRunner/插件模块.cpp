@@ -26,6 +26,9 @@
 #include <random>
 #include <stdio.h> 
 #include <direct.h> 
+#include "ItemActor.h"
+#include "ItemStackBase.h"
+#include "ActorDamageSource.h"
 
 #if defined(__GNUC__)
 #pragma GCC diagnostic push
@@ -228,6 +231,8 @@ const char* BeforeOnRaidEnd = u8"BeforeOnRaidEnd";
 const char* AfterOnRaidEnd = u8"AfterOnRaidEnd";
 const char* BeforeOnEntityFall = u8"BeforeOnPlayerFall";
 const char* AfterOnEntityFall = u8"AfterOnPlayerFall";
+const char* BeforeOnWeatherChange = u8"BeforeOnWeatherChange";
+const char* AfterOnWeatherChange = u8"AfterOnWeatherChange";
 
 static void addPlayerInfo(Json::Value& jv, Player* p) {
 	if (p) {
@@ -300,14 +305,14 @@ THook(bool,
 	if (!InvokeEvent(BeforeOnServerCmd, toJsonString(jv).data(), &root)) {
 		bool result = original(_this, cmd);
 		root.clear();
-		InvokeEvent(AfterOnPlacedBlock, toJsonString(jv).data(), &root);
+		InvokeEvent(AfterOnServerCmd, toJsonString(jv).data(), &root);
 		return result;
 	}
 	return false;
 }
 
 static const VA STD_COUT_HANDLE = SYM_OBJECT(VA,
-	MSSYM_B2UUA3impB2UQA4coutB1AA3stdB2AAA23VB2QDA5basicB1UA7ostreamB1AA2DUB2QDA4charB1UA6traitsB1AA1DB1AA3stdB3AAAA11B1AA1A); 
+	MSSYM_B2UUA3impB2UQA4coutB1AA3stdB2AAA23VB2QDA5basicB1UA7ostreamB1AA2DUB2QDA4charB1UA6traitsB1AA1DB1AA3stdB3AAAA11B1AA1A);
 
 THook(VA,
 	MSSYM_MD5_b5f2f0a753fc527db19ac8199ae8f740,
@@ -341,7 +346,7 @@ THook(void,
 			addPlayerInfo(jv, p);
 			jv["uuid"] = p->getUuid()->toString();
 			jv["formid"] = fid;
-			jv["selected"] = fmp->getSelectStr();		
+			jv["selected"] = fmp->getSelectStr();
 			if (!InvokeEvent(BeforeOnFormSelect, toJsonString(jv).data(), &root)) {
 				original(_this, id, handle, fp);
 				root.clear();
@@ -467,7 +472,7 @@ THook(void,
 	auto nsize = pItemStack->getStackSize();
 	auto nname = std::string(pItemStack->getName());
 	auto pPlayer = _this->getPlayer();
-	VA v3 = *((VA*)_this + 1);				
+	VA v3 = *((VA*)_this + 1);
 	BlockSource* bs = *(BlockSource**)(*(VA*)(v3 + 848) + 72i64);
 	BlockPos* pBlkpos = (BlockPos*)((char*)_this + 176);
 	Block* pBlk = bs->getBlock(pBlkpos);
@@ -475,6 +480,10 @@ THook(void,
 	Json::Value root;
 	jv["itemid"] = nid;
 	jv["itemcount"] = nsize;
+	//std::cout << nsize << std::endl;
+	//jv["itemcount2"] = pItemStack->getItemCount();
+	//std::cout << jv["itemcount2"] << std::endl;
+	jv["itemstr"] = pItemStack->toString();
 	jv["itemname"] = std::string(nname);
 	jv["itemaux"] = naux;
 	addPlayerInfo(jv, pPlayer);
@@ -537,12 +546,12 @@ THook(void,
 		Json::Value jv;
 		jv["mobname"] = mob_name;
 		if (_this->getEntityTypeId() == 1) {
-			
+
 			if (checkIsPlayer(_this)) {
 				addPlayerInfo(jv, (Player*)_this);
-				std::string playertype;				
+				std::string playertype;
 				SYMCALL(std::string&, MSSYM_MD5_af48b8a1869a49a3fb9a4c12f48d5a68, &playertype, 319);
-				jv["mobtype"] = playertype;			
+				jv["mobtype"] = playertype;
 			}
 		}
 		else
@@ -569,6 +578,9 @@ THook(bool,
 		original(_this, item, pBlkpos, a4, v5, pBlk);
 		return false;
 	}
+	jv["itemcount"] = item->getItemCount();
+	//std::cout << jv["itemcount"] << std::endl;
+	jv["itemstr"] = item->toString();
 	playerUseItem[jv["playername"].asCString()] = time(0) + item->getId();
 	jv["position"] = toJson(pBlkpos->getPosition()->toJsonString());
 	jv["itemid"] = item->getId();
@@ -633,6 +645,14 @@ THook(void,
 	return;
 }
 
+//THook(void, MSSYM_B1QA3dieB1AA6PlayerB2AAE26UEAAXAEBVActorDamageSourceB3AAAA1Z, Player* p, ActorDamageSource* a2) {
+//	//std::cout << "die" << std::endl;
+//	//std::cout << a2->getDeathMessage(p) << std::endl;
+//	//original(p, a2);
+//	return;
+//	//return 
+//}
+
 THook(void, MSSYM_B1QE14jumpFromGroundB1AA6PlayerB2AAA7UEAAXXZ, Player* p) {
 	Json::Value jv;
 	if (p != NULL) {
@@ -647,8 +667,49 @@ THook(void, MSSYM_B1QE14jumpFromGroundB1AA6PlayerB2AAA7UEAAXXZ, Player* p) {
 	return;
 }
 
+THook(void, MSSYM_B1QE13updateWeatherB1AA5LevelB2AAA9QEAAXMHMHB1AA1Z, void* _this, float a2, int a3, float a4) {
+	Json::Value jv;
+	jv["weatherType"] = a2;
+	jv["weatherTag"] = a4;
+	jv["second"] = a3;
+	Json::Value root;
+	if (!InvokeEvent(BeforeOnWeatherChange, toJsonString(jv).data(), &root)) {
+		try
+		{
+			if (!root["weatherType"].isNull()) {
+				a2 = root["weatherType"].asFloat();
+			}
+		}
+		catch (const std::exception&)
+		{
+		}
+		try
+		{
+			if(!root["weatherTag"].isNull()){
+				a4 = root["weatherTag"].asInt();
+			}
+		}
+		catch (const std::exception&)
+		{
+		}
+		try
+		{
+			if (!root["second"].isNull()) {
+				a3 = root["second"].asInt();
+			}
+		}
+		catch (const std::exception&)
+		{
+			
+		}
+		original(_this,a2,a3,a4);
+		root.clear();
+		InvokeEvent(AfterOnWeatherChange, toJsonString(jv).data(), &root);
+	}
+}
+
 THook(VA, MSSYM_B1QE12getAttachPosB1AA6PlayerB2AAA4UEBAB1QA6AVVec3B2AAE15W4ActorLocationB2AAA1MB1AA1Z, Player* _this, VA a1, VA a2, int a3) {
-	return original(_this,a1,a2,a3);
+	return original(_this, a1, a2, a3);
 }
 
 THook(VA, MSSYM_B1QE14canBeSeenOnMapB1AA6PlayerB2AAA4QEBAB1UA3NXZ, Player* _this) {
@@ -663,10 +724,10 @@ THook(void, MSSYM_B1QE15transformOnFallB1AA9FarmBlockB2AAE20UEBAXAEAVBlockSource
 	jv["height"] = a5;
 	jv["dimensionid"] = a4->getDimensionId();
 	jv["entitytype"] = a4->getEntityTypeName();
-	jv["entityname"] = a4->getNameTag().length()==0?a4->getTypeName(): a4->getNameTag();
+	jv["entityname"] = a4->getNameTag().length() == 0 ? a4->getTypeName() : a4->getNameTag();
 	Json::Value root;
 	if (!InvokeEvent(BeforeOnEntityFall, toJsonString(jv).data(), &root)) {
-		original(_this,a2,a3,a4,a5);
+		original(_this, a2, a3, a4, a5);
 		root.clear();
 		InvokeEvent(AfterOnEntityFall, toJsonString(jv).data(), &root);
 	}
@@ -684,10 +745,6 @@ THook(void,
 		addPlayerInfo(jv, p);
 	}
 	jv["cmd"] = crp->toString();
-	if (jv["cmd"] == "/test1") {
-		SYMCALL(void, MSSYM_B1QE15changeDimensionB1AE12ServerPlayerB2AAA6UEAAXVB2QDE11AutomaticIDB1AE10VDimensionB2AAA1HB3AAUA1NB1AA1Z, *p, 1);
-		return;
-	}
 	Json::Value root;
 	if (!InvokeEvent(BeforeOnInputCommand, toJsonString(jv).data(), &root)) {
 		original(_this, id, crp);
@@ -708,7 +765,7 @@ THook(Player*,
 	jv["xuid"] = std::string(pPlayer->getXuid(p_level));
 	onlinePlayers[uuid] = pPlayer;
 	Json::Value root;
-	
+
 	if (!InvokeEvent(BeforeOnLoadName, toJsonString(jv).data(), &root)) {
 		root.clear();
 		InvokeEvent(AfterOnLoadName, toJsonString(jv).data(), &root);
@@ -746,14 +803,12 @@ THook(void,
 	}
 	Json::Value jv;
 	addPlayerInfo(jv, _this);
-	
 	Json::Value root;
-	
 	if (!InvokeEvent(BeforeOnMove, toJsonString(jv).data(), &root)) {
 		original(_this, a2);
 		root.clear();
 		InvokeEvent(AfterOnMove, toJsonString(jv).data(), &root);
-		
+
 	}
 	return;
 
@@ -799,7 +854,7 @@ THook(void*, MSSYM_B1QE11triggerRaidB1AE20RaidTriggerComponentB2AAE14AEAAXAEAVAc
 		jv["entityName"] = a2->getNameTag();
 		jv["entityPos"] = a2->getPos()->toJsonString();
 		jv["dimensionId"] = a2->getDimensionId();
-		
+
 	}
 	else
 	{
@@ -814,51 +869,6 @@ THook(void*, MSSYM_B1QE11triggerRaidB1AE20RaidTriggerComponentB2AAE14AEAAXAEAVAc
 	return original(_this, a2);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 THook(void*, MSSYM_B2QQA51RaidB2AAA4QEAAB1AA2XZ, void* _this, void* a2) {
 	Json::Value jv;
 	Json::Value root;
@@ -871,27 +881,27 @@ THook(void*, MSSYM_B2QQA51RaidB2AAA4QEAAB1AA2XZ, void* _this, void* a2) {
 }
 
 THook(void, MSSYM_B1QA7explodeB1AA5LevelB2AAE20QEAAXAEAVBlockSourceB2AAA9PEAVActorB2AAA8AEBVVec3B2AAA1MB1UA4N3M3B1AA1Z, void* _this, BlockSource* a2, Actor* a3, Vec3* a4, float a5, bool a6, bool a7, float a8, bool a9) {
-	
+
 	Json::Value jv;
 	jv["position"] = a4->toJsonString();
 	if ((VA)a3 != 0) {
 		jv["entity"] = a3->getEntityTypeName();
 		jv["entityId"] = a3->getEntityTypeId();
 		jv["dimensionId"] = a3->getDimensionId();
-		
 	}
 	jv["explodePower"] = a5;
 	Json::Value root;
 	if (!InvokeEvent(BeforeOnExploed, toJsonString(jv).data(), &root)) {
 		try
 		{
-			a5 = root["explodePower"].asInt();
+			if(!root["explodePower"].isNull())
+				a5 = root["explodePower"].asInt();
 		}
 		catch (const std::exception&)
 		{
-
 		}
 		original(_this, a2, a3, a4, a5, a6, a7, a8, a9);
+		//std::cout << "original" << std::endl;
 		root.clear();
 		InvokeEvent(AfterOnExploed, toJsonString(jv).data(), &root);
 	}
@@ -899,12 +909,16 @@ THook(void, MSSYM_B1QA7explodeB1AA5LevelB2AAE20QEAAXAEAVBlockSourceB2AAA9PEAVAct
 
 }
 
+//THook(void*, MSSYM_B1QE10pickUpItemB1AA5ActorB2AAE18QEAAXAEAVItemActorB2AAA1HB1AA1Z, ItemActor* _this, int count) {
+//	return original(_this, count);
+//}
+
 
 void Wchar_tToString(std::string& szDst, wchar_t* wchar)
 {
 	wchar_t* wText = wchar;
 	DWORD dwNum = WideCharToMultiByte(CP_OEMCP, NULL, wText, -1, NULL, 0, NULL, FALSE);
-	char* psText; 
+	char* psText;
 	psText = new char[dwNum];
 	WideCharToMultiByte(CP_OEMCP, NULL, wText, -1, psText, dwNum, NULL, FALSE);
 	szDst = psText;
@@ -1013,6 +1027,6 @@ void init() {
 }
 
 void exit() {
-	
+
 }
 

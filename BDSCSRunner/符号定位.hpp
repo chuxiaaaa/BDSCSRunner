@@ -248,4 +248,38 @@ constexpr RVA MSSYM_B1QE15changeDimensionB1AE12ServerPlayerB2AAA6UEAAXVB2QDE11Au
 // [符号] ?transformOnFall@FarmBlock@@UEBAXAEAVBlockSource@@AEBVBlockPos@@PEAVActor@@M@Z
 constexpr RVA MSSYM_B1QE15transformOnFallB1AA9FarmBlockB2AAE20UEBAXAEAVBlockSourceB2AAE12AEBVBlockPosB2AAA9PEAVActorB2AAA1MB1AA1Z = 0x00874A60;
 
+
+// [原型] public: virtual void * __ptr64 __cdecl ItemActor::`vector deleting destructor'(unsigned int) __ptr64
+// [符号] ??_EItemActor@@UEAAPEAXI@Z
+constexpr RVA MSSYM_B3QQUE10EItemActorB2AAA9UEAAPEAXIB1AA1Z = 0x00650450;
+
+// [原型] protected: __cdecl ItemStackBase::ItemStackBase(void) __ptr64
+// [符号] ??0ItemStackBase@@IEAA@XZ
+constexpr RVA MSSYM_B2QQE140ItemStackBaseB2AAA4IEAAB1AA2XZ = 0x007490E0;
+
+// [原型] public: bool __cdecl ItemStackBase::isEnchanted(void)const __ptr64
+// [符号] ?isEnchanted@ItemStackBase@@QEBA_NXZ
+constexpr RVA MSSYM_B1QE11isEnchantedB1AE13ItemStackBaseB2AAA4QEBAB1UA3NXZ = 0x0074A590;
+
+// [原型] public: void __cdecl Actor::pickUpItem(class ItemActor & __ptr64,int) __ptr64
+// [符号] ?pickUpItem@Actor@@QEAAXAEAVItemActor@@H@Z
+constexpr RVA MSSYM_B1QE10pickUpItemB1AA5ActorB2AAE18QEAAXAEAVItemActorB2AAA1HB1AA1Z = 0x004A2290;
+
+
+//// [原型] public: class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > __cdecl ItemStackBase::toString(void)const __ptr64
+// [符号] ?toString@ItemStackBase@@QEBA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@XZ
+constexpr RVA MSSYM_MD5_7e0f26f40abf6c9395801299db2bc54f = 0x0074B6C0;
+
+// [原型] public: void __cdecl Level::updateWeather(float,int,float,int) __ptr64
+// [符号] ?updateWeather@Level@@QEAAXMHMH@Z
+constexpr RVA MSSYM_B1QE13updateWeatherB1AA5LevelB2AAA9QEAAXMHMHB1AA1Z = 0x0098FBA0;
+
+// [原型] public: virtual struct std::pair<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class std::vector<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class std::allocator<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > > > > __cdecl ActorDamageSource::getDeathMessage(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class Actor * __ptr64)const __ptr64
+// [符号] ?getDeathMessage@ActorDamageSource@@UEBA?AU?$pair@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@2@@std@@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@3@PEAVActor@@@Z
+constexpr RVA MSSYM_MD5_9d5cf510871f8161e8bd4b461f64876b = 0x004ED7E0;
+
+// [原型] public: virtual void __cdecl Player::die(class ActorDamageSource const & __ptr64) __ptr64
+// [符号] ?die@Player@@UEAAXAEBVActorDamageSource@@@Z
+constexpr RVA MSSYM_B1QA3dieB1AA6PlayerB2AAE26UEAAXAEBVActorDamageSourceB3AAAA1Z = 0x0068C7B0;
+
 // 文件结束
